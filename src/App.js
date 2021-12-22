@@ -1,25 +1,32 @@
-import logo from './logo.svg';
-import './App.css';
+import "./App.css";
+import {  useState } from "react";
+import { useDropzone } from "react-dropzone";
 
 function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React s
-        </a>
-      </header>
-    </div>
-  );
+    const [files, setFiles] = useState();
+
+    const { getRootProps, getInputProps } = useDropzone({
+        accept: ".pdf",
+        multiple: false,
+        maxFiles: 1,
+        maxSize: 50000000,
+        onDrop: (acceptedFiles) => {
+            console.log(acceptedFiles);
+            setFiles(acceptedFiles);
+        },
+    });
+
+    console.log(files);
+
+    return (
+        <div className="files">
+            <div className="files-dropzone" {...getRootProps()}>
+                <input {...getInputProps()} />
+                <p>Drag 'n' drop some files here, or click to select files</p>
+                <p>{files && files[0]?.name}</p>
+            </div>
+        </div>
+    );
 }
 
 export default App;
